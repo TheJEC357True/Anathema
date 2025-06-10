@@ -23,6 +23,7 @@ This project focuses on demonstrating my ability to build robust and scalable ga
 *   **Quest System:**
     *   Implemented a graph-based quest management system.
     *   Designed C++ `UQuestNode` for quest definition (prerequisites, follow-ups).
+    *   Designed C++ `UObjective` to be used in polymorphism for general quest objective tracking/definition.
 
 *   **Modular Health & Combat System:**
     *   Developed a reusable `UHealthComponent` (C++) that can be attached to any actor (player, enemy, destructible environment).
@@ -37,7 +38,7 @@ This project focuses on demonstrating my ability to build robust and scalable ga
 *   **Unreal Engine 5.5:** Proficient use of the editor, Blueprint visual scripting, and C++ game programming.
 *   **C++:** Development of foundational gameplay systems, base classes, and engine interaction.
 *   **Blueprints:** Rapid prototyping, content creation, visual logic for specific gameplay instances, and extending C++ functionality.
-*   **Git & Git LFS:** Professional version control using Git, including large file management with Git LFS for efficient binary asset tracking.
+*   **Git & Git LFS:** Professional version control using Git, including large file management with Git LFS for efficient binary asset tracking, use of filters to protect sensitive information from leaking, and rewriting Git 
 *   **Object-Oriented Design / Component-Based Architecture:** Extensive use of inheritance, composition, and components for modular and scalable systems.
 
 ## Getting Started

@@ -48,6 +48,11 @@ public:
     UFUNCTION(BlueprintNativeEvent, Category = "Objective")
     void InitializeObjective(AActor* OwningActor); // Pass context like the quest owner
 
+    // Uninitializes the objective (e.g., unbinds from game events).
+    // Called when the quest containing this objective becomes inactive or completed.
+    UFUNCTION(BlueprintNativeEvent, Category = "Objective")
+    void UninitializeObjective(); // No parameters needed for base uninitialization
+
     // Checks if the objective is currently complete.
     // This is BlueprintPure as it just checks state, no side effects.
     // It's also a BlueprintNativeEvent for C++ and Blueprint overrides.
@@ -75,6 +80,7 @@ protected:
     // These are also 'virtual' to allow C++ subclasses to override them further.
 
     virtual void InitializeObjective_Implementation(AActor* OwningActor);
+    virtual void UninitializeObjective_Implementation();
     virtual bool IsObjectiveCurrentlyComplete_Implementation() const;
     virtual FText GetProgressText_Implementation() const;
 };

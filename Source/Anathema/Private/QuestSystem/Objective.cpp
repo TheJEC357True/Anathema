@@ -21,6 +21,11 @@ void UObjective::InitializeObjective_Implementation(AActor* OwningActor)
     UE_LOG(LogTemp, Log, TEXT("Base Objective Initialized: %s"), *ObjectiveDescription.ToString());
     // Derived classes will add specific initialization logic (e.g., binding to game events).
 }
+void UObjective::UninitializeObjective_Implementation() // <--- NEW IMPLEMENTATION
+{
+    UE_LOG(LogTemp, Log, TEXT("Base UObjective '%s' Uninitialized."), *ObjectiveDescription.ToString());
+    // Derived classes will override this to perform specific cleanup (e.g., unbind from events).
+}
 
 bool UObjective::IsObjectiveCurrentlyComplete_Implementation() const
 {
@@ -47,5 +52,9 @@ void UObjective::CompleteObjective()
         UE_LOG(LogTemp, Log, TEXT("Objective Completed: %s"), *ObjectiveDescription.ToString());
         // Broadcast the delegate to notify any listeners (like the UQuestNode)
         OnObjectiveCompletedDelegate.Broadcast(this);
+        // After an objective is completed, it's a good idea to uninitialize it to stop listening.
+        // This is often handled by the UQuestNode or UQuestManagerComponent after it gets the completion broadcast,
+        // but can also be done here if the objective is truly self-contained.
+        // Execute_UninitializeObjective(this); // Uncomment if objective should uninitialize itself
     }
 }

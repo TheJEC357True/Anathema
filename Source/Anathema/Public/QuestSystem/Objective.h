@@ -7,6 +7,32 @@
 #include "Delegates/Delegate.h"
 #include "Objective.generated.h"
 
+// Define a common base struct for event data
+// This is important for polymorphic event routing.
+USTRUCT(BlueprintType)
+struct FObjectiveEventData
+{
+    GENERATED_BODY()
+
+    // Base properties common to all events.
+    UPROPERTY(BlueprintReadWrite, Category = "Objective Event")
+    FName EventTag; // Ideas: "EnemyKilled", "ItemCollected", "LocationReached", ...
+    
+    // e.g., PlayerController responsible for the event, World context, etc.
+    UPROPERTY(BlueprintReadWrite, Category = "Objective Event")
+    APlayerController* ResponsiblePlayerController = nullptr;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Objective Event")
+    AActor* TriggeringActor = nullptr; // e.g., the killed enemy, collected item
+    // Add more common event data as needed.
+
+    FObjectiveEventData() {}
+
+    FObjectiveEventData(FName& Tag, APlayerController* PlayerController, AActor* Actor) // For EnemyKilled, CollectedItem,
+        : EventTag(Tag), ResponsiblePlayerController(PlayerController), TriggeringActor(Actor) {
+    }
+};
+
 // Define a delegate to notify when an objective is completed
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObjectiveCompleted, UObjective*, CompletedObjective);
 
@@ -74,6 +100,12 @@ public:
     UPROPERTY(BlueprintAssignable, Category = "Objective")
     FOnObjectiveCompleted OnObjectiveCompletedDelegate;
 
+    // --- NEW: Universal Event Processing Function ---
+    // This function will be called by UQuestManagerComponent for any relevant event.
+    // Derived classes will override this to implement specific logic.
+    UFUNCTION(BlueprintNativeEvent, Category = "Objective")
+    void ProcessGameEvent(const FObjectiveEventData& EventData);
+
 protected:
     // --- C++ Implementation for BlueprintNativeEvents ---
     // You MUST provide a C++ body for BlueprintNativeEvents with _Implementation suffix.
@@ -83,4 +115,5 @@ protected:
     virtual void UninitializeObjective_Implementation();
     virtual bool IsObjectiveCurrentlyComplete_Implementation() const;
     virtual FText GetProgressText_Implementation() const;
+    virtual void ProcessGameEvent_Implementation(const FObjectiveEventData& EventData);
 };

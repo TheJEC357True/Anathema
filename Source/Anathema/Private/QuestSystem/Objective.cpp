@@ -58,3 +58,9 @@ void UObjective::CompleteObjective()
         // Execute_UninitializeObjective(this); // Uncomment if objective should uninitialize itself
     }
 }
+
+void UObjective::ProcessGameEvent_Implementation(const FObjectiveEventData& EventData)
+{
+    // The base class simply logs, derived classes will implement their specific checks.
+    UE_LOG(LogTemp, Verbose, TEXT("Base UObjective '%s' received event"), *ObjectiveDescription.ToString());
+}
